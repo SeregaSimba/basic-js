@@ -20,13 +20,75 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  encrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  constructor(item = true) {
+    this.azbu = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    this.item = item;
   }
-  decrypt() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+  encrypt(str, key) {
+    if (!str || !key) {
+      throw new Error('Incorrect arguments!');
+    }
+    if (this.item) {
+      key = key.toUpperCase();
+      str = str.toUpperCase();
+    } else {
+      key = key.toUpperCase();
+      str = str.split("").reverse().join("");
+    } 
+    let result = '';
+    let index  = 0;
+
+    for (let i = 0; i < str.length; i++) {
+      let row = str[i];
+  
+      if (i >= str.length) {
+        row = ste[i % str.length];
+      }
+      if (this.azbu.includes(row)) {
+        let step = this.azbu.indexOf(row);
+        let step2 = this.azbu.indexOf(key[index >= key.length ? index % key.length : index]);
+        const itog = this.azbu[(this.azbu.length + (step + step2)) % this.azbu.length];
+        result += itog;
+        index++;
+      } else {
+        result += row;
+      }
+    }
+    return result;
+  }
+
+  decrypt(str, key) {
+    if (!str || !key) {
+      throw new Error('Incorrect arguments!');
+    }
+    if (this.item) {
+      key = key.toUpperCase();
+      str = str.toUpperCase();
+    } else {
+      key = key.toUpperCase();
+      str = str.split("").reverse().join("");
+    } 
+    let result = '';
+    let index  = 0;
+
+    for (let i = 0; i < Math.max(str.length); i++) {
+      let row = str[i];
+  
+      if (i >= str.length) {
+        row = ste[i % str.length];
+      }
+      if (this.azbu.includes(row)) {
+        let step = this.azbu.indexOf(row);
+        let step2 = this.azbu.indexOf(key[index >= key.length ? index % key.length : index]);
+        let itog = this.azbu[(this.azbu.length + step - step2) % this.azbu.length];
+        result += itog;
+        index++;
+      } else {
+        result += row;
+      }
+    }
+    return result;
   }
 }
 
